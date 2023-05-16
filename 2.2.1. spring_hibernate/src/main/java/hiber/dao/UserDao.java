@@ -1,5 +1,6 @@
 package hiber.dao;
 
+import hiber.model.Car;
 import hiber.model.User;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface UserDao {
 
     List<User> listUsers();
 
-    User carList(String model, int series);
+    User carList(Car car);
 }

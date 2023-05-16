@@ -4,19 +4,18 @@ import hiber.model.Car;
 import hiber.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
 public class UserDaoImp implements UserDao {
 
-    @Autowired
     private final SessionFactory sessionFactory;
 
+    @Autowired
     public UserDaoImp(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -27,21 +26,19 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery("from User");
+        Query<User> query = sessionFactory.getCurrentSession().createQuery("from User", User.class);
         return query.getResultList();
     }
 
     @Override
-    public User carList(String model, int series) {
-        Session session = sessionFactory.openSession();
-        Query query = session.createQuery("FROM User u JOIN u.car c WHERE c.model=:model " +
-        "and c.series=:series");
-        query.setParameter("model", model);
-        query.setParameter("series", series);
+    public User carList(Car car) {
         try {
-            return (User) query.getResultList();
+            return sessionFactory.getCurrentSession().
+                    createQuery("from User user where user.car.model = :model and user.car.series = :series", User.class).
+                    setParameter("model", car.getModel()).
+                    setParameter("series", car.getSeries()).
+                    uniqueResult();
         } catch (Exception e) {
             System.out.println("Юзер с таким авто не найден.");
             return null;

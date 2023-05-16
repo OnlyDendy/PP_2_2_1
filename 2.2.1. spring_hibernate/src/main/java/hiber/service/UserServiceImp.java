@@ -12,9 +12,8 @@ import java.util.List;
 @Service
 public class UserServiceImp implements UserService {
 
-   @Autowired
    private final UserDao userDao;
-
+   @Autowired
    public UserServiceImp(UserDao userDao){
       this.userDao = userDao;
    }
@@ -34,7 +33,7 @@ public class UserServiceImp implements UserService {
 
    @Transactional
    @Override
-   public User carList(String model, int series) {
-      return userDao.carList(model, series);
+   public User carList(Car car) {
+      return userDao.carList(car);
    }
 }
