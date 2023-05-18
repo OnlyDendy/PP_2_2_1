@@ -29,7 +29,7 @@ public class MainApp {
 
         List<User> users = userService.listUsers();
         for (User user : users) {
-            System.out.println(user.toString());
+            System.out.println(user);
         }
 
         User user4 = userService.carList(new Car("Audi",6));

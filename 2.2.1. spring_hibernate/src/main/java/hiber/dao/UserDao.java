@@ -9,9 +9,7 @@ import java.util.List;
 public interface UserDao {
     @Transactional
     void add(User user);
-
-    @Transactional
+    @Transactional(readOnly = true)
     List<User> listUsers();
-
     User carList(Car car);
 }
